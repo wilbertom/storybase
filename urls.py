@@ -15,6 +15,8 @@ from storybase_help.api import (HelpResource)
 from storybase_story.api import StoryResource
 from storybase_taxonomy.api import TagResource
 
+from apps.storybase_badge.api import BadgeResource
+
 # Override default error handler with one that uses RequestContext
 handler500 = 'storybase.views.defaults.server_error'
 
@@ -33,6 +35,8 @@ v0_1_api.register(LocationResource())
 v0_1_api.register(PlaceResource())
 v0_1_api.register(HelpResource())
 v0_1_api.register(TagResource())
+v0_1_api.register(BadgeResource())
+
 urlpatterns += patterns('', 
     # REST API
     (r'^api/', include(v0_1_api.urls)),
