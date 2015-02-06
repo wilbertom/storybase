@@ -28,8 +28,8 @@
     {% addtoblock "css" %}<script src="{{ STATIC_URL }}js/libs/less-1.4.1.min.js"></script>{% endaddtoblock %}
     {% endif %}
     {% comment %}
-    If we're not compiling the LESS stylesheet with less.js, we'll be passing 
-    the styleshset through django-compressor below. 
+    If we're not compiling the LESS stylesheet with less.js, we'll be passing
+    the styleshset through django-compressor below.
     {% endcomment %}
 
     {% render_block "css" %}
@@ -52,14 +52,21 @@
   <body class="story-viewer">
     <div id="app">
         <header id="header">
+
+          <div id="badges">
+
+          </div>
+
           <div id="tools">
               <a href="{{ story.get_absolute_url }}" title="{% trans "About This Story" %}" class="external"><span class="text">{% trans "About This Story" %}</span> <i class="icon-th-list"></i></a>
               <a href="{{ story.get_share_url }}" title="{% trans "Share This Story"%}" class="storybase-share-link" data-options='{"appendeeSelector": "#app", "alignment": "bottom right" }'>
                 <span class="text">{% trans "Share This Story" %}</span> <i class="icon-share"></i>
               </a>
           </div>
+
           <h1 class="title">{{ story.title }}</h1>
           <p class="byline">{% trans "By" %} {% if story.byline %}{{ story.byline }}{% else %}{{ story.contributor_name }}{% endif %}</p>
+
         </header>
 
         <div id="body">
@@ -96,7 +103,7 @@
           </section>
           {% endfor %}
 
-          {% if story.call_to_action or story.allow_connected %} 
+          {% if story.call_to_action or story.allow_connected %}
           <section id="call-to-action" class="section call-to-action" style="display:none;">
 	        <h2 class="title">{% trans "How Can You Help?" %}</h2>
 	        {{ story.call_to_action|safe }}
@@ -134,9 +141,9 @@
             {{ story.structure.render_toc }}
             <button id="toggle-toc">
               <span class="bars">
-                <span class="bar"></span>                
-                <span class="bar"></span>                
-                <span class="bar"></span>                
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
               </span>
               <span class="text">Table of Contents</span>
               <i class="icon-caret-up"></i></button>
@@ -170,16 +177,32 @@
     <script src="{{ STATIC_URL }}js/viewer/views.js"></script>
     <script src="{{ STATIC_URL }}js/viewer/routes.js"></script>
     <script src="{{ STATIC_URL }}js/libs/tooltipster-2.1.4/js/jquery.tooltipster.min.js"></script>
-    
+
+    <script src="{{ STATIC_URL }}js/viewer/badges/application.js"></script>
+    <script src="{{ STATIC_URL }}js/viewer/badges/models.js"></script>
+    <script src="{{ STATIC_URL }}js/viewer/badges/views.js"></script>
+    <script src="{{ STATIC_URL }}js/viewer/badges/routes.js"></script>
+
     {% endcompress %}
 
     <script type="text/javascript">
     $(document).ready(function() {
-        var storyStructureType = '{{ story.structure_type }}';        
+        var storyStructureType = '{{ story.structure_type }}';
         var story = new storybase.models.Story({{ story.structure.to_json }});
         var sections = new storybase.collections.Sections;
         var viewerContext = '{{ context }}';
         sections.reset({{ sections_json }});
+
+
+        var badges = new storybase.badges.collections.Badges();
+        var badgesView = new storybase.badges.views.BadgesView({
+            collection: badges,
+            el: '#badges'
+        });
+
+        badges.fetch({success: function(){
+            badgesView.render();
+        }});
 
         if (viewerContext == 'iframe') {
             storybase.viewer.router = null;
@@ -203,9 +226,9 @@
             // the route event listeners have been wired up
             Backbone.history.start();
         }
-        
+
         $('#tools a').tooltipster();
-        
+
         storybase.viewer.app.render();
     });
     </script>
