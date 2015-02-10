@@ -11,6 +11,19 @@ For more information, see http://www.floodlightproject.org/
 Changelog
 ---------
 
+0.20.0
+~~~~~~
+
+* A badges feature was added that helps staff aggregate stories. See 'apps/storybase_badge/README.rst'.
+* Badges resource under '/api/0.1/badges'.
+* The stories resource now contains a field badges.
+* Story Viewer displays badges that staff members can add and remove to stories.
+* Fixture data for badges, and badges groups.
+* Image icons for Denver badges under 'static/img/badges'.
+* Django settings module fix, renamed 'atlas' to 'settings'.
+* Added missing migration 'storybase/apps/storybase_taxonomy/migrations/0004_auto__add_unique_tag_name.py'.
+* Downgraded cmsplugin-filer to a version below 0.10.
+
 0.19.3
 ~~~~~~
 
@@ -583,6 +596,7 @@ Authors
 
 * Geoff Hing - https://github.com/ghing/
 * Eric Miller - https://github.com/patternleaf/
+* Wilberto Morales - https://github.com/wilbertom/
 
 On the shoulders of giants
 --------------------------
