@@ -62,6 +62,9 @@
 
           <h1 class="title">{{ story.title }}</h1>
           <p class="byline">{% trans "By" %} {% if story.byline %}{{ story.byline }}{% else %}{{ story.contributor_name }}{% endif %}</p>
+          <div id="badges">
+
+          </div>
 
         </header>
 
@@ -144,10 +147,6 @@
               <i class="icon-caret-up"></i></button>
           </nav>
 
-          <div id="badges">
-
-          </div>
-
         </footer>
     </div>
 
@@ -193,16 +192,18 @@
         var viewerContext = '{{ context }}';
         sections.reset({{ sections_json }});
 
-
+        {% if request.user.is_staff %}
         var badges = new storybase.badges.collections.Badges();
         var badgesView = new storybase.badges.views.BadgesView({
             collection: badges,
             el: '#badges'
         });
 
+
         badges.fetch({success: function(){
             badgesView.render();
         }});
+        {% endif %}
 
         if (viewerContext == 'iframe') {
             storybase.viewer.router = null;
